@@ -25,6 +25,7 @@ Things you may want to cover:
 
 
 Clone project
+https://github.com/sourabh8178/assignment.git
 
 **install bundle:**
 $ bundle install
@@ -39,4 +40,4 @@ $ rails db:migrate
 $ rails db:seed
 
 **API Postman Collection:**
-assignment.postman_collection.json# assignment
+ assignment.postman_collection.json
