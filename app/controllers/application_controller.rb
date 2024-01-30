@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
  helper_method :current_user
  
  def current_user
-  @current_user ||= User.find_by(authentication_token: request.headers['Token'])
+  authorization_header = request.headers['Authorization']
+  token = authorization_header.split(' ').last
+  @current_user ||= User.find_by(authentication_token: token)
+# @current_user ||= User.find_by(authentication_token: request.headers['Token'])
+  # @current_user ||= User.find_by(authentication_token: authorization_header)
  end
 
  def authenticate_user!

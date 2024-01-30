@@ -4,6 +4,7 @@ class User < ApplicationRecord
 	validates :email, presence: true, uniqueness: true #for email uniqness
 	validates :password, presence: true  #for password must present
 	validates_length_of :password, :minimum => 8 #lenght of the password
+  has_many :blogs
 	before_save :encrypt_password
 
 	before_save :ensure_authentication_token
