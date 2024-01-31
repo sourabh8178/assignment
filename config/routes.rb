@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post "/users/sign_up" => "users#sign_up"
   post "/users/login" => "users#login" 
   post "/users/logout" => "users#logout"
+  post "/profile" => "profile#create"
   
   root "blogs#index"
 end

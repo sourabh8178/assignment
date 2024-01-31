@@ -4,7 +4,7 @@ class BlogsController < ApplicationController
   def index
     @blogs = Blog.all
     if @blogs.present?
-      render json: {blogs: @blogs}
+     render json: @blogs, root: "data", adapter: :json
     else
       render json: {errors: "No Blogs Present"}
     end
@@ -17,7 +17,7 @@ class BlogsController < ApplicationController
     @blog.blog_image = params[:blog_image]
     @blog.user_id = @current_user.id
     if @blog.save
-      render json: {blogs: @blog}
+      render json: @blog, root: "data", adapter: :json
     else
       render json: {errors: "Not able to create"}
     end
@@ -26,7 +26,7 @@ class BlogsController < ApplicationController
   def show
     @blog = Blog.find_by(id: params[:id].to_i)
     if @blog
-      render json: {blogs: @blog}
+      render json: @blog, root: "data", adapter: :json
     else
       render json: {errors: "Blog is not found"}
     end

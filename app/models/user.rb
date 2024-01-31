@@ -5,6 +5,7 @@ class User < ApplicationRecord
 	validates :password, presence: true  #for password must present
 	validates_length_of :password, :minimum => 8 #lenght of the password
   has_many :blogs
+  has_one :profile
 	before_save :encrypt_password
 
 	before_save :ensure_authentication_token
