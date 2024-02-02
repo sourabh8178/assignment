@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   post "/users/login" => "users#login" 
   post "/users/logout" => "users#logout"
   post "/profile" => "profile#create"
+  get "/profile/:id" => "profile#show"
+  get "/view_profile" => "profile#view_profile"
+  put "/update_profile" => "profile#update_profile"
   
   root "blogs#index"
 end
