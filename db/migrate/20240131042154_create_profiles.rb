@@ -8,6 +8,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
       t.string :instagram_url
       t.string :youtub_url
       t.string :linkedin_url
+      t.string :location
       t.timestamps
     end
   end
