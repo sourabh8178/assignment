@@ -1,6 +1,30 @@
 class ProfileController < ApplicationController
 	before_action :authenticate_user!
 
+	def following_lists
+		user_ids = Follow.where(user_id: @current_user.id).pluck(:sender_id)
+		@profiles = @profiles = Profile.where(user_id: user_ids)
+
+		if @profiles
+			render json: @profiles, each_serializer: ProfileDetailsSerializer
+      # render json: @profile, root: "profile", adapter: :json
+    else
+      render json: {errors: "Not able to create"}
+    end
+	end
+
+	def follower_lists
+		user_ids = Follow.where(sender_id: @current_user.id).pluck(:user_id)
+		@profiles = Profile.where(id: user_ids)
+
+		if @profiles
+			render json: @profiles, each_serializer: ProfileDetailsSerializer
+      # render json: @profile, root: "profile", adapter: :json
+    else
+      render json: {errors: "Not able to create"}
+    end
+	end
+
 	def create
 		@profile = Profile.new
 		@profile.name = params[:name]
@@ -22,7 +46,7 @@ class ProfileController < ApplicationController
 	def show
 		@profile = Profile.find_by(id: params[:id].to_i)
 		if @profile
-      render json: @profile, root: "data", adapter: :json
+      render json: @profile, each_serializer: ProfileDetailsSerializer
     else
       render json: {errors: "Profile is not found"}
     end
@@ -37,12 +61,32 @@ class ProfileController < ApplicationController
     end
 	end
 
+	def view_profile_with_all_data
+		@profile = Profile.last
+		# @profile = @current_user.profile
+		if @profile
+			render json: @profile, each_serializer: ProfileWithAllDataSerializer
+      # render json: @profile, root: "data", adapter: :json
+    else
+      render json: {errors: "Profile is not found"}
+    end
+	end
+
 	def update_profile
 		@profile = @current_user.profile.update(profile_params)
 		if @profile
       render json: @profile, root: "data", adapter: :json
     else
       render json: {errors: "Profile can't update"}
+    end
+	end
+
+	def search
+		@profiles = Profile.where("name LIKE ?", "%#{params[:name]}%")
+		if @profiles
+			render json: @profiles, each_serializer: ProfileDetailsSerializer
+    else
+      render json: {errors: "No user find"}
     end
 	end
 

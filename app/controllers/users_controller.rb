@@ -16,13 +16,25 @@ class UsersController < ApplicationController
 
     if user.present?
       my_password = BCrypt::Password.new(user.password) #encrypt the password
-      if my_password == password 
+      if my_password == password
        render json: {data: user}, status: :ok
       else
        render json: {errors: "Invalid email or password"}, status: :unprocessable_entity
       end
     else
-     render json: {errors: "Email Not found, please enter correct email."}
+     render json: {errors: "Email Not found, please enter correct email."}, status: :unprocessable_entity
     end
-  end 
+  end
+
+  def forget_password
+    
+  end
+
+  def logout
+    # authorization_header = request.headers['Authorization']
+    # token = authorization_header.split(' ').last
+    # user = User.find_by(authentication_token: token)
+    # user.update(authentication_token: nil)
+  end
+
 end

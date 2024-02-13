@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   # Defines the root path route ("/")
   # root "articles#index"
   get "blogs", to: "blogs#index"
@@ -12,7 +11,14 @@ Rails.application.routes.draw do
   post "/profile" => "profile#create"
   get "/profile/:id" => "profile#show"
   get "/view_profile" => "profile#view_profile"
+  get "/view_profile_with_all_data" => "profile#view_profile_with_all_data"
   put "/update_profile" => "profile#update_profile"
+  get "follower_lists" => "profile#follower_lists"
+  get "following_lists" => "profile#following_lists"
+  get "unfollow_user/:id" => "follow#unfollow_user"
+  get "follow_user/:id" => "follow#follow_user"
+  get "search_user" => "profile#search"
+
   
   root "blogs#index"
 end

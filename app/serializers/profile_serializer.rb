@@ -19,6 +19,7 @@ class ProfileSerializer < ActiveModel::Serializer
       :address,
       :zip_code,
       :date_birth,
+      :follow
     ]
  
     attribute :profile_image do |object|
@@ -43,6 +44,15 @@ class ProfileSerializer < ActiveModel::Serializer
 
     attribute :created_at do |object|
     	@object.created_at.strftime('%B %d, %Y')
+    end
+
+    attribute :follow do |object|
+     follow = Follow.where(user_id: current_user.id, sender_id: @object.user_id)
+     if follow.present?
+      true
+     else
+      false
+     end
     end
 
 end
