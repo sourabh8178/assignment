@@ -7,9 +7,8 @@ class ProfileController < ApplicationController
 
 		if @profiles
 			render json: @profiles, each_serializer: ProfileDetailsSerializer
-      # render json: @profile, root: "profile", adapter: :json
     else
-      render json: {errors: "Not able to create"}
+      render json: {errors: "Not a following list"}, status: :unprocessable_entity
     end
 	end
 
@@ -21,25 +20,17 @@ class ProfileController < ApplicationController
 			render json: @profiles, each_serializer: ProfileDetailsSerializer
       # render json: @profile, root: "profile", adapter: :json
     else
-      render json: {errors: "Not able to create"}
+      render json: {errors: "Not a follower lists"}, status: :unprocessable_entity
     end
 	end
 
 	def create
-		@profile = Profile.new
-		@profile.name = params[:name]
-		@profile.user_name = params[:user_name]
-		@profile.profile_image = params[:profile_image]
-		@profile.profile_background_image = params[:profile_background_image]
-		@profile.instagram_url = params[:instagram_url]
-		@profile.youtub_url = params[:youtub_url]
-		@profile.linkedin_url = params[:linkedin_url]
+		@profile = Profile.new(profile_create_params)
 		@profile.user_id = @current_user.id
-		@profile.about = params[:about]
 		if @profile.save
       render json: @profile, root: "profile", adapter: :json
     else
-      render json: {errors: "Not able to create"}
+      render json: {errors: "Not able to create"}, status: :unprocessable_entity
     end
 	end
 
@@ -48,16 +39,16 @@ class ProfileController < ApplicationController
 		if @profile
       render json: @profile, each_serializer: ProfileDetailsSerializer
     else
-      render json: {errors: "Profile is not found"}
+      render json: {errors: "Profile is not found"}, status: :unprocessable_entity
     end
 	end
 
 	def view_profile
 		@profile = @current_user.profile
-		if @profile
+		if @profile.present?
       render json: @profile, root: "data", adapter: :json
     else
-      render json: {errors: "Profile is not found"}
+      render json: {errors: "Profile is not found"}, status: :unprocessable_entity
     end
 	end
 
@@ -94,5 +85,10 @@ class ProfileController < ApplicationController
 
 	 def profile_params
 	  params.require(:editedData).permit(:name, :user_name, :gender, :about, :location, :country, :city, :address, :zipcode, :date_birth, :instagram_url, :youtub_url, :linkedin_url, :profile_image, :profile_background_image)
+	 end
+
+	 def profile_create_params
+	 	params.permit( :name, :user_name, :date_birth, :gender, :about, :country, :city, :zip_code, :address, :instagram_url, :youtub_url, :linkedin_url, :profile_image, :profile_background_image
+    )
 	 end
 end

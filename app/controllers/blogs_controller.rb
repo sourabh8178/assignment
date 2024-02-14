@@ -6,7 +6,7 @@ class BlogsController < ApplicationController
     if @blogs.present?
      render json: @blogs, root: "data", adapter: :json
     else
-      render json: {errors: "No Blogs Present"}
+      render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
     end
   end
 
