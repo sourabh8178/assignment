@@ -26,8 +26,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def check_email
+    user = User.find_by_email(params[:email])
+    if user.present?
+       render json: {data: user}, status: :ok
+    else
+     render json: {errors: "Please enter the valid email"}, status: :unprocessable_entity
+    end
+  end
+
   def forget_password
-    
+    user = User.find_by_email(params[:email])
+    # user.update(password: params[:password])
+    if user.update(password: params[:password])
+      render json: {data: user}, status: :ok
+    else
+     render json: {errors: "Password cant be changed"}, status: :unprocessable_entity
+    end
   end
 
   def logout

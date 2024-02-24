@@ -30,7 +30,7 @@ class ProfileController < ApplicationController
 		if @profile.save
       render json: @profile, root: "profile", adapter: :json
     else
-      render json: {errors: "Not able to create"}, status: :unprocessable_entity
+      render json: {errors: @profile.errors.full_messages.join(', ')}, status: :unprocessable_entity
     end
 	end
 
@@ -73,7 +73,7 @@ class ProfileController < ApplicationController
 	end
 
 	def search
-		@profiles = Profile.where("name LIKE ?", "%#{params[:name]}%")
+		@profiles = Profile.where("name LIKE ? AND id != ?", "%#{params[:name]}%", current_user.profile.id)
 		if @profiles
 			render json: @profiles, each_serializer: ProfileDetailsSerializer
     else

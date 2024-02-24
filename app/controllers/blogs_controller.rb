@@ -23,6 +23,15 @@ class BlogsController < ApplicationController
     end
   end
 
+  def user_blog
+    @blogs = @current_user.blogs
+    if @blogs.present?
+     render json: @blogs, root: "data", adapter: :json
+    else
+      render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
+    end
+  end
+
   def show
     @blog = Blog.find_by(id: params[:id].to_i)
     if @blog

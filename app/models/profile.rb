@@ -3,6 +3,9 @@ class Profile < ApplicationRecord
 	has_one_attached :profile_image
 	has_one_attached :profile_background_image
 
+	validates :name, presence: true
+	validates :user_name, uniqueness: true
+
 	def url_profile
 		host = ENV["API_BASE_URL"] || ''
 		if self.profile_image.attached?
