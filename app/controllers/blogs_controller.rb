@@ -40,4 +40,41 @@ class BlogsController < ApplicationController
       render json: {errors: "Blog is not found"}
     end
   end
+
+  def like_blog
+   like = Like.find_or_initialize_by(user_id: current_user.id, blog_id: params[:id].to_i)
+    if like.save
+      render json: {like: "liked the post"}, status: :ok
+    else
+      render json: {errors: like.errors.messages}, status: :unprocessable_entity
+    end 
+  end
+
+  def unlike_blog
+    like = Like.find_by(user_id: current_user.id, blog_id: params[:id].to_i)
+    if like.destroy
+      render json: {like: "unliked the post"}, status: :ok
+    else
+      render json: {errors: "unable to unlike the post"}, status: :unprocessable_entity
+    end 
+  end
+
+  def bookmark_blog
+    mark = Bookmark.find_or_initialize_by(user_id: current_user.id, blog_id: params[:id].to_i)
+    if mark.save
+        render json: {mark: "Bookmarked the post"}, status: :ok
+    else
+      render json: {errors: mark.errors.messages}, status: :unprocessable_entity
+    end 
+  end
+
+  def unbookmark_blog
+    like = Bookmark.find_by(user_id: current_user.id, blog_id: params[:id].to_i)
+    if like.destroy
+      render json: {like: "Bookmarked the post"}, status: :ok
+    else
+      render json: {errors: "unable to unlike the post"}, status: :unprocessable_entity
+    end 
+    
+  end
 end

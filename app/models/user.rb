@@ -6,6 +6,9 @@ class User < ApplicationRecord
 	validates_length_of :password, :minimum => 8 #lenght of the password
   has_many :blogs
   has_one :profile
+  has_many :likes
+  has_many :bookmarks
+  has_many :follows
 	before_save :encrypt_password
 
 	before_save :ensure_authentication_token

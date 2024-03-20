@@ -7,7 +7,9 @@ class BlogSerializer < ActiveModel::Serializer
       :updated_at,
       :user_id,
       :blog_image,
-      :profile
+      :profile,
+      :liked,
+      :bookmarked
     ]
 
     attribute :blog_image do |object|
@@ -26,4 +28,13 @@ class BlogSerializer < ActiveModel::Serializer
         @object.user.profile.attributes.merge(image: profile_image)
       end
     end
+
+    attribute :liked do |object|
+      @object.likes.exists?(user_id: current_user.id)
+    end
+
+    attribute :bookmarked do |object|
+      @object.bookmarks.exists?(user_id: current_user.id)
+    end
+
 end

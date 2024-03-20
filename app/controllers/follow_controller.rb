@@ -2,7 +2,7 @@ class FollowController < ApplicationController
 	before_action :authenticate_user!
 
 	def follow_user
-	  @follow = Follow.create(user_id: @current_user.id, sender_id: params[:id].to_i)
+	  @follow = Follow.find_or_initialize_by(user_id: @current_user.id, sender_id: params[:id].to_i)
 		if @follow.save
 	  	render json: {errors: "Follow successful"}
     else

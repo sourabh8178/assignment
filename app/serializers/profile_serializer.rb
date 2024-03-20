@@ -19,7 +19,10 @@ class ProfileSerializer < ActiveModel::Serializer
       :address,
       :zip_code,
       :date_birth,
-      :follow
+      :follow,
+      :number_followers,
+      :number_followings,
+      :number_posts
     ]
  
     attribute :profile_image do |object|
@@ -53,6 +56,17 @@ class ProfileSerializer < ActiveModel::Serializer
      else
       false
      end
+    end
+
+    attribute :number_followers do |object|
+      Follow.where(user_id: @object.user_id).count
+    end
+
+    attribute :number_followings do |object|
+      Follow.where(sender_id: @object.user_id).count
+    end
+    attribute :number_posts do |object|
+      @object.user.blogs.count
     end
 
 end
