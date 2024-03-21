@@ -4,7 +4,8 @@ class BlogsController < ApplicationController
   def index
     @blogs = Blog.all
     if @blogs.present?
-     render json: @blogs, root: "data", adapter: :json
+      render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
+     # render json: @blogs, root: "data", adapter: :json
     else
       render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
     end
@@ -26,7 +27,8 @@ class BlogsController < ApplicationController
   def user_blog
     @blogs = @current_user.blogs
     if @blogs.present?
-     render json: @blogs, root: "data", adapter: :json
+     # render json: @blogs, root: "data", adapter: :json
+     render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
     else
       render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
     end
@@ -75,6 +77,14 @@ class BlogsController < ApplicationController
     else
       render json: {errors: "unable to unlike the post"}, status: :unprocessable_entity
     end 
-    
+  end
+
+  def delete
+    blog = Blog.find_by(id: params[:id].to_i)
+    if blog.destroy
+      render json: {Post: "Post deleted"}, status: :ok
+    else
+      render json: {errors: "unable to delete the post"}, status: :unprocessable_entity
+    end
   end
 end

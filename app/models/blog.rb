@@ -1,6 +1,6 @@
 class Blog < ApplicationRecord
 	belongs_to :user 
 	has_one_attached :blog_image
-	has_many :likes
-	has_many :bookmarks
+	has_many :likes, dependent: :destroy
+	has_many :bookmarks, dependent: :destroy
 end

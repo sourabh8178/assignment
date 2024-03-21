@@ -21,7 +21,11 @@ Rails.application.routes.draw do
   get "unfollow_user/:id" => "follow#unfollow_user"
   get "follow_user/:id" => "follow#follow_user"
   get "search_user" => "profile#search"
-
+  post 'like/:id' => "blogs#like_blog"
+  post 'unlike/:id' => "blogs#unlike_blog"
+  get 'delete_blog/:id' => "blogs#delete"
+  post '/bookmark/:id' => "blogs#bookmark_blog"
+  post '/unbookmark/:id' => "blogs#unbookmark_blog"
   
   root "blogs#index"
 end

@@ -5,7 +5,7 @@ class ProfileDetailsSerializer < ActiveModel::Serializer
       :user_name,
       :user_id,
       :profile_image,
-      :follow
+      :follow,
     ]
  
     attribute :profile_image do |object|
@@ -26,5 +26,6 @@ class ProfileDetailsSerializer < ActiveModel::Serializer
       false
      end
     end
+
 
 end
