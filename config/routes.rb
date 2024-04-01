@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get 'delete_blog/:id' => "blogs#delete"
   post '/bookmark/:id' => "blogs#bookmark_blog"
   post '/unbookmark/:id' => "blogs#unbookmark_blog"
+  get '/comments/:id' => "comments#comment_post"
   
   root "blogs#index"
 end

@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :likes
   has_many :bookmarks
   has_many :follows
+  has_many :comment_posts
 	before_save :encrypt_password
 
 	before_save :ensure_authentication_token
