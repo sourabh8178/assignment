@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 	def sign_up #for create new user
   	user = User.new(email: params[:user][:email], password: params[:user][:password])
 		if user.save
-      render json: {date: user}, status: :created
+      render json: {data: user}, status: :created
 		else  	
 			render json: {errors: user.errors}, status: :unprocessable_entity
 		end

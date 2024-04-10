@@ -65,6 +65,7 @@ class ProfileController < ApplicationController
 
 	def update_profile
 		@profile = @current_user.profile.update(profile_params)
+		# @current_user.profile.update(profile_image: params[:profile_image]) if params[:profile_image]
 		if @profile
       render json: @profile, root: "data", adapter: :json
     else
@@ -73,7 +74,7 @@ class ProfileController < ApplicationController
 	end
 
 	def search
-		@profiles = Profile.where("name LIKE ? AND id != ?", "%#{params[:name]}%", current_user.profile.id)
+		@profiles = Profile.where("LOWER(name) LIKE ? AND id != ?", "%#{params[:name].downcase}%", current_user.profile.id)
 		if @profiles
 			render json: @profiles, each_serializer: ProfileDetailsSerializer
     else
@@ -83,9 +84,9 @@ class ProfileController < ApplicationController
 
 	private
 
-	 def profile_params
-	  params.require(:editedData).permit(:name, :user_name, :gender, :about, :location, :country, :city, :address, :zipcode, :date_birth, :instagram_url, :youtub_url, :linkedin_url, :profile_image, :profile_background_image)
-	 end
+	  def profile_params
+		  params.permit(:name, :user_name, :gender, :about, :location, :country, :city, :address, :zipcode, :date_birth, :instagram_url, :youtub_url, :linkedin_url, :profile_image, :profile_background_image)
+		end
 
 	 def profile_create_params
 	 	params.permit( :name, :user_name, :date_birth, :gender, :about, :country, :city, :zip_code, :address, :instagram_url, :youtub_url, :linkedin_url, :profile_image, :profile_background_image

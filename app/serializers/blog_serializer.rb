@@ -9,7 +9,7 @@ class BlogSerializer < ActiveModel::Serializer
       :blog_image,
       :profile,
       :liked,
-      :bookmarked
+      :comments
     ]
 
     attribute :blog_image do |object|
@@ -33,8 +33,8 @@ class BlogSerializer < ActiveModel::Serializer
       @object.likes.exists?(user_id: current_user.id)
     end
 
-    attribute :bookmarked do |object|
-      @object.bookmarks.exists?(user_id: current_user.id)
+    attribute :comments do |object|
+      @object.comment_posts
     end
 
 end

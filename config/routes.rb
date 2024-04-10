@@ -27,6 +27,6 @@ Rails.application.routes.draw do
   post '/bookmark/:id' => "blogs#bookmark_blog"
   post '/unbookmark/:id' => "blogs#unbookmark_blog"
   get '/comments/:id' => "comments#comment_post"
-  
+  post '/comment' => "comments#create"
   root "blogs#index"
 end
