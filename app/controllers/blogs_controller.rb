@@ -16,6 +16,7 @@ class BlogsController < ApplicationController
     @blog.title = params[:title]
     @blog.body = params[:body]
     @blog.blog_image = params[:image]
+    @blog.blog_type = params[:postType]
     @blog.user_id = @current_user.id
     if @blog.save
       render json: @blog, root: "data", adapter: :json

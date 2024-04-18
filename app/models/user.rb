@@ -1,10 +1,12 @@
 class User < ApplicationRecord
 	require 'bcrypt'
 
-	validates :email, presence: true, uniqueness: true #for email uniqness
-	validates :password, presence: true  #for password must present
-	validates_length_of :password, :minimum => 8 #lenght of the password
+	# validates :email, presence: true, uniqueness: true #for email uniqness
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
+	validates :password, presence: true
+	validates_length_of :password, :minimum => 8
   has_many :blogs
+  has_many :stories
   has_one :profile
   has_many :likes
   has_many :bookmarks

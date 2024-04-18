@@ -17,7 +17,8 @@ class BlogSerializer < ActiveModel::Serializer
       if @object.blog_image.attached?
           {
               id: @object.blog_image.id,
-              url: host + Rails.application.routes.url_helpers.rails_blob_url( @object.blog_image, only_path: true)
+              url: host + Rails.application.routes.url_helpers.rails_blob_url( @object.blog_image, only_path: true),
+              blob: @object.blog_image.blob.content_type
           }
       end
     end
