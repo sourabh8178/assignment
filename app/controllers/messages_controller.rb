@@ -8,13 +8,14 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @message = Message.new(message_params)
-    @message.sender_id = current_user.id
+    @message = Message.new
+    @message.reciver_id = params[:sendTo].to_i
+    @message.sender_id = params[:sendBy].to_i
+    @message.message_image = params[:image]
 
     if @message.save
-      # Broadcast the message to connected clients
-      socket_broadcast('chat', @message)
-      render json: @message
+      render json: @message, root: "data", each_serializer: MessageSerializer, adapter: :json
+      # render json: @message, MessagesSerializer
     else
       render json: { errors: @message.errors.full_messages }, status: :unprocessable_entity
     end

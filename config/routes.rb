@@ -28,6 +28,12 @@ Rails.application.routes.draw do
   post '/unbookmark/:id' => "blogs#unbookmark_blog"
   get '/comments/:id' => "comments#comment_post"
   post '/comment' => "comments#create"
+  post '/message' => "messages#create"
+  get '/my_reels_post' => "blogs#blog_type_reels"
+  get '/my_notifications' => "notifications#index"
+  post '/my_notifications/:id' => "notifications#update"
+  get '/reels'  => "blogs#reels"
+  get '/posts' => "blogs#posts"
 
   post '/room' => "rooms#create"
   get '/my_room' => "rooms#my_room"

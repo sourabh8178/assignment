@@ -59,11 +59,11 @@ class ProfileSerializer < ActiveModel::Serializer
     end
 
     attribute :number_followers do |object|
-      Follow.where(user_id: @object.user_id).count
+      Follow.where(sender_id: @object.user_id).count
     end
 
     attribute :number_followings do |object|
-      Follow.where(sender_id: @object.user_id).count
+      Follow.where(user_id: @object.user_id).count
     end
     attribute :number_posts do |object|
       @object.user.blogs.count

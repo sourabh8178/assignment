@@ -18,9 +18,7 @@ class StoriesController < ApplicationController
 	end
 
 	def user_stories
-		current_user_has_story = current_user.story.present?
 		users_with_stories = User.where(id: current_user.follows.map(&:sender_id)).select { |user| user.story.present? }
-		users_with_stories << current_user if current_user_has_story
 		if users_with_stories.present?
      render json: users_with_stories, root: "data", each_serializer: StoriesSerializer, adapter: :json
     else
@@ -29,8 +27,8 @@ class StoriesController < ApplicationController
 	end
 
 	def current_user_story
-		story = User.where(id: current_user.id)
-		if story.story.present?
+		if current_user.story.present?
+			story = User.where(id: current_user.id)
      render json: story, root: "data", each_serializer: StoriesSerializer, adapter: :json
     else
       render json: {errors: "No story Present"}, status: :unprocessable_entity
@@ -40,8 +38,8 @@ class StoriesController < ApplicationController
 	def mark_as_seen
 		story = Story.find_by_id(params[:id])
 		if story.present?
-		  unless story.seen_ids.include?(current_user.id.to_i)
-		    story.seen_ids << current_user.id.to_i
+		  unless story.seen_ids.include?(current_user.id.to_s)
+		    story.seen_ids << current_user.id
 		    story.save
 		  end
 		end

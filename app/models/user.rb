@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_one :story
   has_one :profile
   has_many :likes
+  has_many :notifications
   has_many :bookmarks
   has_many :follows
   has_many :comment_posts

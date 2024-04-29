@@ -14,7 +14,7 @@ class ProfileController < ApplicationController
 
 	def follower_lists
 		user_ids = Follow.where(sender_id: @current_user.id).pluck(:user_id)
-		@profiles = Profile.where(id: user_ids)
+		@profiles = Profile.where(user_id: user_ids)
 
 		if @profiles
 			render json: @profiles, each_serializer: ProfileDetailsSerializer

@@ -11,6 +11,36 @@ class BlogsController < ApplicationController
     end
   end
 
+  def reels
+    @blogs = Blog.all
+    if @blogs.present?
+      render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
+     # render json: @blogs, root: "data", adapter: :json
+    else
+      render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
+    end
+  end
+
+  def posts
+    @blogs = Blog.all
+    if @blogs.present?
+      render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
+     # render json: @blogs, root: "data", adapter: :json
+    else
+      render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
+    end
+  end
+
+  def blog_type_reels
+    @blogs = @current_user.blogs.where(blog_type: 'reels')
+    if @blogs.present?
+     # render json: @blogs, root: "data", adapter: :json
+     render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
+    else
+      render json: {errors: "No Blogs Present"}, status: :unprocessable_entity
+    end
+  end
+
   def create
     @blog = Blog.new
     @blog.title = params[:title]
@@ -47,6 +77,8 @@ class BlogsController < ApplicationController
   def like_blog
    like = Like.find_or_initialize_by(user_id: current_user.id, blog_id: params[:id].to_i)
     if like.save
+      user_id = Blog.find_by_id(params[:id].to_i).user_id
+      Notification.create(current_user_id: current_user.id, message: "is like your post", user_id: user_id, url_id: params[:id].to_i, notification_type: "like")
       render json: {like: "liked the post"}, status: :ok
     else
       render json: {errors: like.errors.messages}, status: :unprocessable_entity
