@@ -4,7 +4,10 @@ class StoriesSerializer < ActiveModel::Serializer
       :name,
       :profile_image,
       :stories,
-      :seen
+      :seen,
+      :story_id,
+      :title,
+      :seen_users
     ]
  
     attribute :profile_image do |object|
@@ -19,17 +22,13 @@ class StoriesSerializer < ActiveModel::Serializer
 
     attribute :stories do |object|
     	host = ENV["API_BASE_URL"] || ''
-    	image_urls = []
-    	@object.blogs.where(blog_type: "story").each do |blog|
-			if blog.blog_image.attached?
-		      image_urls << {
-		        id: blog.blog_image.id,
-		        blog_id: blog.id,
-		        url: host + Rails.application.routes.url_helpers.rails_blob_url( blog.blog_image, only_path: true)
-		      }
-		    end
-		end
-		image_urls
+		  if @object.story && @object.story.story_image.attached?
+        {
+	        id: @object.story.story_image.id,
+	        story_id: @object.story.id,
+	        url: host + Rails.application.routes.url_helpers.rails_blob_url( @object.story.story_image, only_path: true)
+        }
+	    end
     end
 
     attribute :name do |object|
@@ -37,10 +36,25 @@ class StoriesSerializer < ActiveModel::Serializer
     end
 
     attribute :seen do |object|
-    	seen = []
-	    @object.blogs.where(blog_type: "story").each do |blog|
-			  seen << blog.seen_ids.include?(current_user.id)
-			end
-			seen
+      if @object.story
+  	    @object.story.seen_ids.include?(current_user.id)
+      end
     end
+
+    attribute :story_id do |object|
+      @object.story.id
+    end
+
+    attribute :title do |object|
+      if @object.story.title.present?
+        @object.story.title
+      end
+    end
+
+    attribute :seen_users do |object|
+      if @object.story
+        Profile.where(user_id: @object.story.seen_ids).map{|image| image.url_profile.merge(name: image.name)}
+      end
+    end
+
 end

@@ -28,5 +28,13 @@ Rails.application.routes.draw do
   post '/unbookmark/:id' => "blogs#unbookmark_blog"
   get '/comments/:id' => "comments#comment_post"
   post '/comment' => "comments#create"
+
+  post '/room' => "rooms#create"
+  get '/my_room' => "rooms#my_room"
+  get '/stories' => "stories#user_stories"
+  get '/my_story' => "stories#current_user_story"
+  post '/stories' => "stories#create"
+  delete '/delete_story/:id' => "stories#delete"
+  post '/mark_as_seen/:id' => "stories#mark_as_seen"
   root "blogs#index"
 end

@@ -6,7 +6,7 @@ class User < ApplicationRecord
 	validates :password, presence: true
 	validates_length_of :password, :minimum => 8
   has_many :blogs
-  has_many :stories
+  has_one :story
   has_one :profile
   has_many :likes
   has_many :bookmarks
