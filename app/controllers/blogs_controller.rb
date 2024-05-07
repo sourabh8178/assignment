@@ -12,7 +12,7 @@ class BlogsController < ApplicationController
   end
 
   def reels
-    @blogs = Blog.all
+    @blogs = @current_user.blogs.where(blog_type: "reels")
     if @blogs.present?
       render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
      # render json: @blogs, root: "data", adapter: :json
@@ -22,7 +22,7 @@ class BlogsController < ApplicationController
   end
 
   def posts
-    @blogs = Blog.all
+    @blogs = @current_user.blogs.where(blog_type: "post")
     if @blogs.present?
       render json: @blogs, root: "data", each_serializer: BlogDetailsSerializer, adapter: :json
      # render json: @blogs, root: "data", adapter: :json
@@ -68,7 +68,8 @@ class BlogsController < ApplicationController
   def show
     @blog = Blog.find_by(id: params[:id].to_i)
     if @blog
-      render json: @blog, root: "data", adapter: :json
+      render json: @blog, root: "data", each_serializer: BlogSerializer, adapter: :json
+      # render json: @blog, root: "data", adapter: :json
     else
       render json: {errors: "Blog is not found"}
     end

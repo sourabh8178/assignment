@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
 
 	def sign_up #for create new user
-  	user = User.new(email: params[:user][:email], password: params[:user][:password])
-		if user.save
-      render json: {data: user}, status: :created
+  	user = User.new(email: params[:user][:email].strip, password: params[:user][:password])
+		if user.save!
+      profile_present = user.profile.present?
+      render json: { data: user, profile_present: profile_present }, status: :created
 		else  	
 			render json: {errors: user.errors}, status: :unprocessable_entity
 		end
@@ -17,7 +18,8 @@ class UsersController < ApplicationController
     if user.present?
       my_password = BCrypt::Password.new(user.password) #encrypt the password
       if my_password == password
-       render json: {data: user}, status: :ok
+       profile_present = user.profile.present?
+       render json: {data: user, profile_present: profile_present}, status: :ok
       else
        render json: {errors: "Invalid email or password"}, status: :unprocessable_entity
       end

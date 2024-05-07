@@ -74,3 +74,4 @@ end
 gem 'active_model_serializers'
 gem "figaro"
 gem 'rack-cors'
+gem 'sidekiq'

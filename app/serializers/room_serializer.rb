@@ -5,6 +5,7 @@ class RoomSerializer < ActiveModel::Serializer
       :user_name,
       :user_id,
       :profile_image,
+      # :message
     ]
  
     attribute :profile_image do |object|
@@ -16,5 +17,9 @@ class RoomSerializer < ActiveModel::Serializer
           }
       end
     end
+
+    # attribute :message do |object|
+    #   @object.messages
+    # end
 
 end

@@ -4,12 +4,12 @@ class BlogSerializer < ActiveModel::Serializer
       :title,
       :body,
       :created_at,
-      :updated_at,
       :user_id,
       :blog_image,
       :profile,
       :liked,
-      :comments
+      :comments,
+      :likes
     ]
 
     attribute :blog_image do |object|
@@ -36,6 +36,14 @@ class BlogSerializer < ActiveModel::Serializer
 
     attribute :comments do |object|
       @object.comment_posts
+    end
+
+    attribute :likes do |object|
+      User.where(id:@object.likes.map(&:user_id))&.map(&:profile)&.map{|p| p.url_profile}
+    end
+
+    attribute :created_at do |object|
+      @object.created_at.strftime('%B %d, %Y')
     end
 
 end

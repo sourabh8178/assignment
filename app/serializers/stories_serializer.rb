@@ -7,7 +7,8 @@ class StoriesSerializer < ActiveModel::Serializer
       :seen,
       :story_id,
       :title,
-      :seen_users
+      :seen_users,
+      :created_at
     ]
  
     attribute :profile_image do |object|
@@ -37,7 +38,7 @@ class StoriesSerializer < ActiveModel::Serializer
 
     attribute :seen do |object|
       if @object.story
-  	    @object.story.seen_ids.include?(current_user.id)
+  	    @object.story.seen_ids.include?(current_user.id.to_s)
       end
     end
 
@@ -55,6 +56,10 @@ class StoriesSerializer < ActiveModel::Serializer
       if @object.story
         Profile.where(user_id: @object.story.seen_ids).map{|image| image.url_profile.merge(name: image.name)}
       end
+    end
+
+    attribute :created_at do |object|
+      @object.created_at.strftime('%B %d, %Y')
     end
 
 end
